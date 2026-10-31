@@ -1,0 +1,286 @@
+/* =============================================================================
+   analisis.css — Styles for Halaman Analisis Pesanan
+   Covers: input section, example tags, meal result card, macro summary,
+           ratio bar, items table, JSON panel, empty state
+============================================================================= */
+
+/* ── Input section ───────────────────────────────────────────────────────────── */
+.input-section {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-secondary-bd);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.input-section label {
+  display: block;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--clr-tertiary);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: 10px;
+}
+
+.input-row { display: flex; gap: 12px; align-items: flex-start; }
+
+textarea {
+  flex: 1;
+  background: var(--clr-bg);
+  border: 1.5px solid rgba(76,92,45,.2);
+  border-radius: 10px;
+  color: var(--clr-text);
+  font-family: 'Poppins', sans-serif;
+  font-size: .88rem;
+  line-height: 1.6;
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 108px;
+  outline: none;
+  transition: border-color .2s;
+}
+
+textarea:focus       { border-color: var(--clr-secondary); }
+textarea::placeholder { color: var(--clr-text-dim); }
+
+.btn-analyze {
+  background: var(--clr-secondary);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: .84rem;
+  font-weight: 600;
+  padding: 13px 20px;
+  white-space: nowrap;
+  transition: background .18s, transform .1s;
+  flex-shrink: 0;
+}
+
+.btn-analyze:hover  { background: var(--clr-secondary-lt); }
+.btn-analyze:active { transform: scale(.97); }
+
+/* ── Example quick-fill tags ─────────────────────────────────────────────────── */
+.examples {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ex-tag {
+  background: var(--clr-secondary-bg);
+  border: 1px solid var(--clr-secondary-bd);
+  border-radius: 20px;
+  color: var(--clr-tertiary);
+  cursor: pointer;
+  font-size: .71rem;
+  font-weight: 500;
+  padding: 5px 12px;
+  transition: background .18s;
+}
+
+.ex-tag:hover { background: rgba(106,126,63,.18); }
+
+/* ── Meal result card ────────────────────────────────────────────────────────── */
+.meal-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-secondary-bd);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  overflow: hidden;
+  animation: fadeUp .32s ease both;
+}
+
+.card-header {
+  background: var(--clr-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.meal-title {
+  font-size: .98rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.meal-subtitle {
+  font-size: .7rem;
+  color: rgba(255,255,255,.7);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.total-cal {
+  background: var(--clr-tertiary);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: .76rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  letter-spacing: .3px;
+}
+
+/* ── Macro summary row (3 boxes) ─────────────────────────────────────────────── */
+.macro-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid rgba(76,92,45,.1);
+}
+
+.macro-box {
+  padding: 16px 20px;
+  border-right: 1px solid rgba(76,92,45,.1);
+  text-align: center;
+}
+
+.macro-box:last-child { border-right: none; }
+
+.macro-val {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.macro-val.protein { color: var(--clr-protein); }
+.macro-val.carbs   { color: var(--clr-carbs); }
+.macro-val.fats    { color: var(--clr-fats); }
+
+.macro-lbl {
+  font-size: .65rem;
+  color: var(--clr-text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-top: 5px;
+}
+
+/* ── Macro ratio bar ──────────────────────────────────────────────────────────── */
+.ratio-bar-wrap { padding: 14px 22px; border-bottom: 1px solid rgba(76,92,45,.08); }
+.ratio-bar-lbl  { font-size: .68rem; color: var(--clr-text-muted); font-weight: 500; margin-bottom: 7px; }
+
+.ratio-bar {
+  height: 7px;
+  border-radius: 99px;
+  overflow: hidden;
+  display: flex;
+  background: rgba(76,92,45,.1);
+}
+
+.ratio-seg           { height: 100%; transition: width .5s ease; }
+.ratio-seg.protein   { background: var(--clr-protein); }
+.ratio-seg.carbs     { background: var(--clr-carbs); }
+.ratio-seg.fats      { background: var(--clr-secondary); }
+
+.ratio-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.ratio-legend span {
+  font-size: .67rem;
+  color: var(--clr-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+/* ── Items breakdown table ───────────────────────────────────────────────────── */
+.items-wrap  { padding: 0 22px 18px; }
+
+.items-title {
+  font-size: .68rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  padding: 14px 0 10px;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  font-size: .65rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(76,92,45,.12);
+}
+
+th:not(:first-child) { text-align: right; }
+
+td {
+  font-size: .81rem;
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(76,92,45,.06);
+  vertical-align: top;
+}
+
+td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+tr:last-child td     { border-bottom: none; }
+
+.item-name  { font-weight: 500; color: var(--clr-text); }
+.item-note  { font-size: .68rem; color: var(--clr-text-dim); font-weight: 400; margin-top: 2px; }
+.item-cal   { color: var(--clr-tertiary); font-weight: 600; }
+.item-prot  { color: var(--clr-protein); }
+.item-carbs { color: var(--clr-carbs); }
+.item-fats  { color: var(--clr-fats); }
+
+/* ── JSON payload toggle panel ───────────────────────────────────────────────── */
+.json-toggle {
+  background: none;
+  border: 1px solid var(--clr-secondary-bd);
+  border-radius: 8px;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: .71rem;
+  font-weight: 500;
+  margin: 0 22px 18px;
+  padding: 7px 16px;
+  transition: all .18s;
+}
+
+.json-toggle:hover { border-color: var(--clr-secondary); color: var(--clr-secondary); }
+
+.json-panel {
+  background: var(--clr-bg);
+  border-top: 1px solid var(--clr-secondary-bd);
+  display: none;
+  padding: 18px 22px;
+}
+
+.json-panel.open { display: block; }
+
+pre {
+  color: var(--clr-tertiary);
+  font-family: 'Courier New', monospace;
+  font-size: .72rem;
+  line-height: 1.75;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--clr-text-dim);
+}
+
+.empty-state .icon { font-size: 2.8rem; margin-bottom: 14px; opacity: .45; }
+.empty-state p     { font-size: .88rem; }

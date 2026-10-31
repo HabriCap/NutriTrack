@@ -1,0 +1,118 @@
+/* =============================================================================
+   theme.css — Design Tokens, Base Reset, Header, Layout
+   NutriTrack Indonesia · Green/White Design System
+   Primary  : #ffffff  (background, surface)
+   Secondary: #6A7E3F  (CTA, active, highlight)
+   Tertiary : #4C5C2D  (icons, borders, dark accents)
+   Text on secondary bg: #ffffff
+============================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Design Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Palette */
+  --clr-bg:           #f7f9f4;        /* subtle off-white page bg */
+  --clr-surface:      #ffffff;        /* card / input surface */
+  --clr-secondary:    #6A7E3F;        /* primary action / highlight */
+  --clr-tertiary:     #4C5C2D;        /* borders, icons, dark text */
+  --clr-secondary-lt: #8aa050;        /* hover state */
+  --clr-secondary-bg: rgba(106,126,63,.10); /* tinted fill */
+  --clr-secondary-bd: rgba(106,126,63,.25); /* tinted border */
+
+  /* Macro accent colours */
+  --clr-protein: #4a7fc1;  /* cool blue */
+  --clr-carbs:   #c89a3a;  /* warm amber */
+  --clr-fats:    #6A7E3F;  /* reuse secondary green */
+
+  /* Typography */
+  --clr-text:       #1c2410;  /* near-black, warm */
+  --clr-text-muted: #6b7a5a;  /* muted olive-grey */
+  --clr-text-dim:   #9aaa88;  /* dimmer labels */
+
+  /* Structure */
+  --radius:    14px;
+  --shadow:    0 2px 16px rgba(76,92,45,.10);
+  --shadow-sm: 0 1px 6px  rgba(76,92,45,.07);
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────────── */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  padding: 0 0 72px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+header {
+  background: var(--clr-tertiary);
+  border-bottom: 2px solid var(--clr-tertiary);
+  padding: 20px 28px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-icon {
+  width: 42px; height: 42px;
+  background: var(--clr-secondary);
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 21px; flex-shrink: 0;
+}
+
+header h1 { font-size: 1.3rem; font-weight: 700; color: #ffffff; letter-spacing: .3px; }
+header p  { font-size: .73rem; color: rgba(255,255,255,.65); font-weight: 400; }
+
+/* ── Layout ─────────────────────────────────────────────────────────────────── */
+.container { max-width: 860px; margin: 0 auto; padding: 28px 20px 0; }
+
+/* ── Nav tabs ───────────────────────────────────────────────────────────────── */
+.nav-tabs {
+  background: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-secondary-bd);
+  display: flex;
+  gap: 0;
+}
+
+.nav-tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 13px 22px 11px;
+  transition: color .18s, border-color .18s;
+}
+
+.nav-tab:hover { color: var(--clr-secondary); }
+
+.nav-tab.active {
+  border-bottom-color: var(--clr-secondary);
+  color: var(--clr-secondary);
+  font-weight: 600;
+}
+
+/* ── Page visibility ─────────────────────────────────────────────────────────── */
+.page        { display: none; }
+.page.active { display: block; }
+
+/* ── Shared animation ────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .input-row   { flex-direction: column; }
+  .btn-analyze { width: 100%; }
+  .macro-val   { font-size: 1.1rem; }
+  th, td       { font-size: .7rem; padding: 8px 5px; }
+  .kat-grid    { grid-template-columns: 1fr; }
+}

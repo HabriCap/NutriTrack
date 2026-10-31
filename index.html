@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NutriTrack — Analisis Gizi Makanan Lokal</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Design system tokens, base styles, nav, layout -->
+  <link rel="stylesheet" href="css/theme.css" />
+  <!-- Halaman Analisis Pesanan styles -->
+  <link rel="stylesheet" href="css/analisis.css" />
+  <!-- Smart AI Recommender styles -->
+  <link rel="stylesheet" href="css/recommender.css" />
+  <!-- Halaman Katalog Makanan styles -->
+  <link rel="stylesheet" href="css/katalog.css" />
+</head>
+<body>
+
+<!-- ── App Header ── -->
+<header>
+  <div class="logo-icon">🍽</div>
+  <div>
+    <h1>NutriTrack Indonesia</h1>
+    <p>Analisis Makronutrisi · Hypertrophy &amp; Calorie Deficit</p>
+  </div>
+</header>
+
+<!-- ── Navigation Tabs ── -->
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="switchPage('analisis', this)">📋 Analisis Pesanan</button>
+  <button class="nav-tab"        onclick="switchPage('katalog',  this)">🗂 Katalog Makanan</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PAGE: ANALISIS PESANAN
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="container page active" id="page-analisis">
+
+  <!-- Input section -->
+  <div class="input-section">
+    <label>📋 Input Pesanan Anda</label>
+    <div class="input-row">
+      <textarea
+        id="orderInput"
+        placeholder="Contoh: nasi setengah, ayam bakar tanpa tepung, tempe goreng, sayur asem, teh tawar"
+      ></textarea>
+      <button class="btn-analyze" onclick="analyzeOrder()">Analisis →</button>
+    </div>
+    <div class="examples">
+      <span class="ex-tag" onclick="fillExample(0)">🍚 Warteg Sederhana</span>
+      <span class="ex-tag" onclick="fillExample(1)">🔥 Sinar Minang</span>
+      <span class="ex-tag" onclick="fillExample(2)">🐟 Kharisma Bahari</span>
+      <span class="ex-tag" onclick="fillExample(3)">💪 Bulking Meal</span>
+    </div>
+  </div>
+
+  <!-- Output: meal card injected here by analisis.js -->
+  <div id="output"></div>
+
+  <!-- Smart AI Recommender: goals config + recommendation card -->
+  <div class="rec-goals-bar" id="rec-goals-bar" style="display:none">
+    <div class="rec-goals-title">🎯 Target Harian Anda</div>
+    <div class="rec-goals-fields">
+      <div class="rec-goals-field">
+        <label>Kalori (kkal)</label>
+        <input type="number" id="goalCalories" value="2000" min="1000" max="5000" step="50" />
+      </div>
+      <div class="rec-goals-field">
+        <label>Protein (g)</label>
+        <input type="number" id="goalProtein"  value="120"  min="30"   max="300"  step="5"  />
+      </div>
+    </div>
+  </div>
+  <div id="recommender-output"></div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PAGE: KATALOG MAKANAN
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="container page" id="page-katalog">
+
+  <!-- Search bar -->
+  <div class="kat-search-wrap" style="margin-top:4px;">
+    <span class="kat-search-icon">🔍</span>
+    <input
+      class="kat-search"
+      id="katSearch"
+      placeholder="Cari nama makanan…"
+      type="search"
+      autocomplete="off"
+    />
+  </div>
+
+  <!-- Toolbar: filter chips + add button -->
+  <div class="kat-toolbar">
+    <div class="kat-filters" id="katFilters">
+      <button class="kat-chip active" data-filter="semua"         onclick="setFilter(this)">Semua</button>
+      <button class="kat-chip"        data-filter="tinggi-protein" onclick="setFilter(this)">💪 Tinggi Protein</button>
+      <button class="kat-chip"        data-filter="rendah-kalori"  onclick="setFilter(this)">🍃 Rendah Kalori</button>
+      <button class="kat-chip"        data-filter="karbohidrat"    onclick="setFilter(this)">🍚 Karbohidrat</button>
+      <button class="kat-chip"        data-filter="protein-hewani" onclick="setFilter(this)">🍗 Protein Hewani</button>
+      <button class="kat-chip"        data-filter="protein-nabati" onclick="setFilter(this)">🌱 Protein Nabati</button>
+      <button class="kat-chip"        data-filter="sayuran"        onclick="setFilter(this)">🥬 Sayuran</button>
+      <button class="kat-chip"        data-filter="minuman"        onclick="setFilter(this)">🥤 Minuman</button>
+      <button class="kat-chip"        data-filter="pelengkap"      onclick="setFilter(this)">🌶 Pelengkap</button>
+      <button class="kat-chip"        data-filter="kustom"         onclick="setFilter(this)">⭐ Kustom</button>
+    </div>
+    <button class="btn-add-food" onclick="openAddFoodModal()">+ Tambah Makanan</button>
+  </div>
+
+  <!-- Results count -->
+  <p class="kat-meta" id="katMeta"></p>
+
+  <!-- Food grid: injected by katalog.js renderKatalog() -->
+  <div class="kat-grid" id="katGrid"></div>
+
+</div>
+
+<!-- ── Detail Modal (shared, rendered by katalog.js) ── -->
+<div class="kat-modal-overlay" id="katModal" onclick="closeModal(event)">
+  <div class="kat-modal">
+    <div class="kat-modal-header">
+      <span class="kat-modal-title" id="modalTitle">—</span>
+      <button class="kat-modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="kat-modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ── Add Food Modal ── -->
+<div class="kat-modal-overlay" id="addFoodModal" onclick="closeAddFoodModal(event)">
+  <div class="kat-modal add-food-modal">
+    <div class="kat-modal-header">
+      <span class="kat-modal-title">➕ Tambah Makanan Baru</span>
+      <button class="kat-modal-close" onclick="closeAddFoodModalDirect()">✕</button>
+    </div>
+    <div class="kat-modal-body add-food-body">
+
+      <!-- Row 1: Nama + Kategori -->
+      <div class="af-row">
+        <div class="af-field af-field--grow">
+          <label class="af-label">Nama Makanan <span class="af-req">*</span></label>
+          <input class="af-input" id="af-name" type="text" placeholder="cth: sate ayam" maxlength="60" />
+        </div>
+        <div class="af-field">
+          <label class="af-label">Kategori <span class="af-req">*</span></label>
+          <select class="af-input" id="af-category">
+            <option value="karbohidrat">🍚 Karbohidrat</option>
+            <option value="protein-hewani" selected>🍗 Protein Hewani</option>
+            <option value="protein-nabati">🌱 Protein Nabati</option>
+            <option value="sayuran">🥬 Sayuran</option>
+            <option value="pelengkap">🌶 Pelengkap</option>
+            <option value="minuman">🥤 Minuman</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Row 2: Porsi + Satuan -->
+      <div class="af-row">
+        <div class="af-field">
+          <label class="af-label">Porsi Standar <span class="af-req">*</span></label>
+          <input class="af-input af-input--num" id="af-serving" type="number" value="100" min="1" max="2000" placeholder="100" />
+        </div>
+        <div class="af-field">
+          <label class="af-label">Satuan</label>
+          <select class="af-input" id="af-unit">
+            <option value="g" selected>gram (g)</option>
+            <option value="ml">mililiter (ml)</option>
+          </select>
+        </div>
+        <div class="af-field af-field--grow">
+          <label class="af-label">Catatan Porsi</label>
+          <input class="af-input" id="af-note" type="text" placeholder="cth: 1 tusuk ~100g" maxlength="60" />
+        </div>
+      </div>
+
+      <!-- Row 3: Makros per PORSI -->
+      <div class="af-section-label">Nilai Gizi per Porsi</div>
+      <div class="af-row af-row--4">
+        <div class="af-field">
+          <label class="af-label">Kalori (kkal) <span class="af-req">*</span></label>
+          <input class="af-input af-input--num" id="af-cal" type="number" value="" min="0" max="9999" placeholder="—" />
+        </div>
+        <div class="af-field">
+          <label class="af-label">Protein (g) <span class="af-req">*</span></label>
+          <input class="af-input af-input--num af-prot" id="af-prot" type="number" value="" min="0" max="999" step="0.1" placeholder="—" />
+        </div>
+        <div class="af-field">
+          <label class="af-label">Karbo (g)</label>
+          <input class="af-input af-input--num af-carb" id="af-carb" type="number" value="" min="0" max="999" step="0.1" placeholder="—" />
+        </div>
+        <div class="af-field">
+          <label class="af-label">Lemak (g)</label>
+          <input class="af-input af-input--num af-fat"  id="af-fat"  type="number" value="" min="0" max="999" step="0.1" placeholder="—" />
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <p class="af-error" id="af-error"></p>
+
+      <!-- Actions -->
+      <div class="af-actions">
+        <button class="af-btn-cancel" onclick="closeAddFoodModalDirect()">Batal</button>
+        <button class="af-btn-submit" onclick="submitCustomFood()">Simpan ke Katalog →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     JavaScript — load order matters:
+       1. db.js           → DB, FOOD_META, EXAMPLES, titleCase  (data layer)
+       2. analisis.js     → parseOrder, buildPayload, analyzeOrder
+       3. recommender.js  → runRecommender, renderRecommenderCard
+       4. katalog.js      → CATALOGUE, renderKatalog, openModal, setFilter
+       5. app.js          → switchPage, DOMContentLoaded init
+════════════════════════════════════════════════════════════════════════════ -->
+<script src="js/db.js"></script>
+<script src="js/analisis.js"></script>
+<script src="js/recommender.js"></script>
+<script src="js/katalog.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

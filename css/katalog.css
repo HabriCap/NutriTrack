@@ -1,0 +1,467 @@
+/* =============================================================================
+   katalog.css — Styles for Halaman Katalog Makanan
+   Covers: search bar, filter chips, results meta, food grid cards,
+           category tags, detail modal overlay
+============================================================================= */
+
+/* ── Search bar ─────────────────────────────────────────────────────────────── */
+.kat-search-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.kat-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-text-dim);
+  font-size: 15px;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.kat-search {
+  width: 100%;
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-secondary-bd);
+  border-radius: 10px;
+  color: var(--clr-text);
+  font-family: 'Poppins', sans-serif;
+  font-size: .88rem;
+  outline: none;
+  padding: 11px 14px 11px 40px;
+  transition: border-color .18s;
+}
+
+.kat-search:focus       { border-color: var(--clr-secondary); }
+.kat-search::placeholder { color: var(--clr-text-dim); }
+
+/* ── Filter chips ────────────────────────────────────────────────────────────── */
+.kat-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.kat-chip {
+  background: var(--clr-secondary-bg);
+  border: 1.5px solid var(--clr-secondary-bd);
+  border-radius: 20px;
+  color: var(--clr-tertiary);
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: .72rem;
+  font-weight: 500;
+  padding: 5px 13px;
+  transition: background .15s, border-color .15s, color .15s;
+  white-space: nowrap;
+}
+
+.kat-chip:hover { background: rgba(106,126,63,.18); }
+
+.kat-chip.active {
+  background: var(--clr-secondary);
+  border-color: var(--clr-secondary);
+  color: #ffffff;
+}
+
+/* ── Results meta line ───────────────────────────────────────────────────────── */
+.kat-meta          { font-size: .72rem; color: var(--clr-text-muted); margin-bottom: 14px; }
+.kat-meta strong   { color: var(--clr-tertiary); font-weight: 600; }
+
+/* ── Food grid ───────────────────────────────────────────────────────────────── */
+.kat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+/* ── Food card ───────────────────────────────────────────────────────────────── */
+.food-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-secondary-bd);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow .18s, transform .15s;
+}
+
+.food-card:hover {
+  box-shadow: 0 4px 20px rgba(76,92,45,.14);
+  transform: translateY(-2px);
+}
+
+.food-card-header {
+  background: var(--clr-secondary-bg);
+  border-bottom: 1px solid var(--clr-secondary-bd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px 9px;
+}
+
+.food-card-name {
+  color: var(--clr-text);
+  font-size: .86rem;
+  font-weight: 600;
+}
+
+.food-card-badge {
+  background: var(--clr-secondary);
+  border-radius: 6px;
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.food-card-body { padding: 10px 14px 12px; }
+
+.food-card-note {
+  color: var(--clr-text-dim);
+  font-size: .7rem;
+  margin-bottom: 10px;
+}
+
+/* ── Macro mini-cells inside food card ───────────────────────────────────────── */
+.food-macro-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.food-macro-cell {
+  background: var(--clr-bg);
+  border: 1px solid rgba(76,92,45,.08);
+  border-radius: 7px;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.food-macro-val {
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.food-macro-lbl {
+  color: var(--clr-text-dim);
+  font-size: .58rem;
+  font-weight: 500;
+  letter-spacing: .4px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.food-macro-val.prot { color: var(--clr-protein); }
+.food-macro-val.carb { color: var(--clr-carbs); }
+.food-macro-val.fat  { color: var(--clr-fats); }
+
+/* ── Category tag ────────────────────────────────────────────────────────────── */
+.food-cat-tag {
+  background: rgba(76,92,45,.08);
+  border-radius: 4px;
+  color: var(--clr-tertiary);
+  display: inline-block;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+  margin-bottom: 8px;
+  padding: 2px 7px;
+  text-transform: uppercase;
+}
+
+/* ── Detail modal ────────────────────────────────────────────────────────────── */
+.kat-modal-overlay {
+  background: rgba(28,36,16,.45);
+  display: none;
+  inset: 0;
+  place-items: center;
+  position: fixed;
+  z-index: 100;
+}
+
+.kat-modal-overlay.open { display: grid; }
+
+.kat-modal {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-secondary-bd);
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(76,92,45,.22);
+  max-width: 420px;
+  overflow: hidden;
+  width: calc(100% - 40px);
+  animation: fadeUp .25s ease both;
+}
+
+.kat-modal-header {
+  background: var(--clr-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.kat-modal-title { color: #fff; font-size: .98rem; font-weight: 600; }
+
+.kat-modal-close {
+  background: rgba(255,255,255,.2);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 4px 8px;
+  transition: background .15s;
+}
+
+.kat-modal-close:hover { background: rgba(255,255,255,.35); }
+
+.kat-modal-body { padding: 20px; }
+
+.kat-modal-row {
+  border-bottom: 1px solid rgba(76,92,45,.08);
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  font-size: .84rem;
+}
+
+.kat-modal-row:last-child { border-bottom: none; }
+.kat-modal-key            { color: var(--clr-text-muted); font-weight: 400; }
+.kat-modal-val            { color: var(--clr-text); font-weight: 600; }
+
+.kat-add-btn {
+  background: var(--clr-secondary);
+  border: none;
+  border-radius: 9px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-size: .84rem;
+  font-weight: 600;
+  margin-top: 16px;
+  padding: 11px;
+  text-align: center;
+  transition: background .18s;
+  width: 100%;
+}
+
+.kat-add-btn:hover { background: var(--clr-secondary-lt); }
+
+/* ── Katalog empty state ─────────────────────────────────────────────────────── */
+.kat-empty {
+  grid-column: 1 / -1;
+  padding: 50px 20px;
+  text-align: center;
+  color: var(--clr-text-dim);
+}
+
+.kat-empty .icon { font-size: 2.5rem; margin-bottom: 12px; opacity: .4; }
+
+/* ── Katalog toolbar (chips + add button row) ─────────────────────────────── */
+.kat-toolbar {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.kat-toolbar .kat-filters {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.btn-add-food {
+  background: var(--clr-secondary);
+  border: none;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: .72rem;
+  font-weight: 600;
+  margin-top: 0;
+  padding: 6px 16px;
+  transition: background .18s, transform .1s;
+  white-space: nowrap;
+}
+
+.btn-add-food:hover  { background: var(--clr-secondary-lt); }
+.btn-add-food:active { transform: scale(.97); }
+
+/* ── Add Food modal overrides ────────────────────────────────────────────── */
+.add-food-modal {
+  max-width: 540px;
+}
+
+.add-food-body {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+/* ── Form rows ───────────────────────────────────────────────────────────── */
+.af-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.af-row--4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+/* ── Individual fields ───────────────────────────────────────────────────── */
+.af-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 80px;
+}
+
+.af-field--grow { flex: 1; }
+
+.af-label {
+  color: var(--clr-text-muted);
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.af-req { color: var(--clr-secondary); }
+
+.af-input {
+  background: var(--clr-bg);
+  border: 1.5px solid rgba(76,92,45,.2);
+  border-radius: 8px;
+  color: var(--clr-text);
+  font-family: 'Poppins', sans-serif;
+  font-size: .84rem;
+  outline: none;
+  padding: 8px 10px;
+  transition: border-color .18s;
+  width: 100%;
+}
+
+.af-input:focus  { border-color: var(--clr-secondary); }
+.af-input.af-err { border-color: #c0614a; }
+
+.af-input--num  { text-align: right; font-variant-numeric: tabular-nums; }
+.af-prot        { color: var(--clr-protein); }
+.af-carb        { color: var(--clr-carbs); }
+.af-fat         { color: var(--clr-fats); }
+
+/* ── Section label ───────────────────────────────────────────────────────── */
+.af-section-label {
+  color: var(--clr-tertiary);
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .6px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* ── Error message ───────────────────────────────────────────────────────── */
+.af-error {
+  color: #c0614a;
+  font-size: .75rem;
+  min-height: 18px;
+  margin: 2px 0 8px;
+}
+
+/* ── Action buttons ──────────────────────────────────────────────────────── */
+.af-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.af-btn-cancel {
+  background: none;
+  border: 1.5px solid var(--clr-secondary-bd);
+  border-radius: 9px;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 9px 18px;
+  transition: border-color .18s;
+}
+
+.af-btn-cancel:hover { border-color: var(--clr-secondary); color: var(--clr-secondary); }
+
+.af-btn-submit {
+  background: var(--clr-secondary);
+  border: none;
+  border-radius: 9px;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: .82rem;
+  font-weight: 600;
+  padding: 9px 20px;
+  transition: background .18s;
+}
+
+.af-btn-submit:hover { background: var(--clr-secondary-lt); }
+
+/* Custom badge on food card */
+.food-card-custom-badge {
+  background: rgba(106,126,63,.12);
+  border-radius: 4px;
+  color: var(--clr-secondary);
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  padding: 1px 6px;
+  text-transform: uppercase;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Delete button inside detail modal */
+.kat-delete-btn {
+  background: none;
+  border: 1.5px solid rgba(192,97,74,.4);
+  border-radius: 9px;
+  color: #c0614a;
+  cursor: pointer;
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-size: .82rem;
+  font-weight: 500;
+  margin-top: 8px;
+  padding: 9px;
+  text-align: center;
+  transition: background .18s, border-color .18s;
+  width: 100%;
+}
+
+.kat-delete-btn:hover {
+  background: rgba(192,97,74,.08);
+  border-color: #c0614a;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .kat-toolbar   { flex-wrap: wrap; }
+  .btn-add-food  { width: 100%; text-align: center; border-radius: 10px; }
+  .af-row--4     { grid-template-columns: repeat(2, 1fr); }
+  .add-food-modal { max-width: 100%; }
+}
